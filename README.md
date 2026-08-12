@@ -1,1 +1,1 @@
-# Agente de Inteligencia Artificial para la detección de Fake News
+# Sistema MultiAgente para la detección de Fake News con LAngGraph
