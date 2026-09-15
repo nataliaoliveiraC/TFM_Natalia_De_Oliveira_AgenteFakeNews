@@ -1,0 +1,38 @@
+{
+    "model_name": "LinearSVC",
+    "model_version": "1.0",
+    "language": "en",
+    "input": {
+        "fields": [
+            "title",
+            "text"
+        ],
+        "model_input": "title + text"
+    },
+    "labels": {
+        "0": "Fake",
+        "1": "Actual"
+    },
+    "vectorizer": {
+        "type": "TfidfVectorizer",
+        "lowercase": true,
+        "stop_words": "english",
+        "ngram_range": [
+            1,
+            2
+        ],
+        "min_df": 5,
+        "max_df": 0.95,
+        "max_features": 20000
+    },
+    "classifier": {
+        "type": "LinearSVC",
+        "C": 2
+    },
+    "selection_metric": "macro_f1",
+    "limitations": [
+        "Model performance is influenced by source-specific and editorial language patterns present in the training data.",
+        "Model predictions reflect patterns learned from the training corpus and should not be interpreted as a direct measure of factual truth.",
+        "The model is intended to provide an auxiliary textual classification signal within a broader evidence-based verification system."
+    ]
+}
