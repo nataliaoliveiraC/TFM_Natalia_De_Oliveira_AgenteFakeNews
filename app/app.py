@@ -24,6 +24,81 @@ st.set_page_config(
     layout="wide",
 )
 
+st.markdown(
+    """
+    <style>
+        .block-container {
+            max-width: 1100px;
+            padding-top: 2rem;
+            padding-bottom: 3rem;
+        }
+
+        .app-header {
+            padding: 1.5rem 1.8rem;
+            border-radius: 18px;
+            background: linear-gradient(
+                135deg,
+                #f7f9fc 0%,
+                #eef3f8 100%
+            );
+            margin-bottom: 1.5rem;
+            border: 1px solid #e5e7eb;
+        }
+
+        .app-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 0.4rem;
+        }
+
+        .app-subtitle {
+            font-size: 1rem;
+            color: #5f6368;
+            margin-bottom: 0;
+        }
+
+        div[data-testid="stForm"] {
+            border-radius: 16px;
+            padding: 1.2rem;
+            border: 1px solid #e5e7eb;
+            background-color: #ffffff;
+        }
+
+        div[data-testid="stMetric"] {
+            background-color: #fafafa;
+            border: 1px solid #ececec;
+            padding: 1rem;
+            border-radius: 14px;
+        }
+
+        .verdict-box {
+            padding: 1.2rem 1.4rem;
+            border-radius: 14px;
+            margin: 1rem 0 1.5rem 0;
+            font-size: 1.15rem;
+            font-weight: 600;
+        }
+
+        .verdict-supported {
+            background-color: #e8f5e9;
+            border: 1px solid #b7dfba;
+        }
+
+        .verdict-refuted {
+            background-color: #fdecec;
+            border: 1px solid #f4b5b5;
+        }
+
+        .verdict-warning {
+            background-color: #fff4df;
+            border: 1px solid #f0d59b;
+        }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
+
 
 @st.cache_resource
 def get_resources():
@@ -49,16 +124,29 @@ def get_resources():
 news_graph = get_resources()
 
 
-st.title("Fake News Verification System")
+# st.title("Fake News Verification System")
 
-st.write(
+# st.write(
+#     """
+#     Sistema de verificación de noticias basado en extracción de claims,
+#     búsqueda de evidencias en la web, RAG y verificación factual. Para noticias en inglés, 
+#     incorpora además una señal auxiliar de Machine Learning.
+#     """
+# )
+
+st.markdown(
     """
-    Sistema de verificación de noticias basado en extracción de claims,
-    búsqueda de evidencias en la web, RAG y verificación factual. Para noticias en inglés, 
-    incorpora además una señal auxiliar de Machine Learning.
-    """
+    <div class="app-header">
+        <div class="app-title">Fake News Verification System</div>
+        <div class="app-subtitle">
+            Sistema de verificación de noticias basado en extracción de claims,
+            búsqueda de evidencias en la web, RAG y verificación factual. Para noticias en inglés, 
+            incorpora además una señal auxiliar de Machine Learning.
+        </div>
+    </div>
+    """,
+    unsafe_allow_html=True,
 )
-
 
 # title = st.text_input(
 #     "Título de la noticia",
@@ -152,18 +240,35 @@ if analyze_button:
             )
         verdict = result["final_verdict"].verdict
 
+        # if verdict == "SUPPORTED":
+        #     st.success("Veredicto final: SUPPORTED")
+
+        # elif verdict == "REFUTED":
+        #     st.error("Veredicto final: REFUTED")
+
+        # elif verdict == "NOT_ENOUGH_EVIDENCE":
+        #     st.warning("Veredicto final: NOT ENOUGH EVIDENCE")
+
+        # elif verdict == "CONFLICTING_EVIDENCE":
+        #     st.warning("Veredicto final: CONFLICTING EVIDENCE")
+            
         if verdict == "SUPPORTED":
-            st.success("Veredicto final: SUPPORTED")
+            verdict_class = "verdict-supported"
 
         elif verdict == "REFUTED":
-            st.error("Veredicto final: REFUTED")
+            verdict_class = "verdict-refuted"
 
-        elif verdict == "NOT_ENOUGH_EVIDENCE":
-            st.warning("Veredicto final: NOT ENOUGH EVIDENCE")
+        else:
+            verdict_class = "verdict-warning"
 
-        elif verdict == "CONFLICTING_EVIDENCE":
-            st.warning("Veredicto final: CONFLICTING EVIDENCE")
-            
+        st.markdown(
+            f"""
+            <div class="verdict-box {verdict_class}">
+                Veredicto final: {verdict}
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )    
         col1, col2 = st.columns(2)
 
         col1.metric(
