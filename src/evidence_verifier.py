@@ -75,6 +75,7 @@ def verify_evidence(
     evidences,
     client,
     model="gpt-5.6-terra",
+    language=None,
 ):
     """
     Verifica una claim utilizando exclusivamente las evidencias recuperadas por el sistema RAG.
@@ -102,7 +103,16 @@ def verify_evidence(
     # Preparamos las evidencias recuperadas en un formato comprensible para el LLM
     evidence_text = format_evidences_for_llm(evidences)
 
-    instructions = """
+    if language == "es":
+        language_instruction = (
+            "Write the explanation and reasons in Spanish."
+        )
+    elif language == "en":
+        language_instruction = (
+            "Write the explanation and reasons in English."
+        )
+
+    instructions = f"""
     You are an Evidence Verifier for a fact-checking system.
 
     Your task is to verify a claim using ONLY the evidence provided to you.
@@ -162,7 +172,7 @@ def verify_evidence(
 
     Base the final verdict on the content of the evidence, not on retrieval similarity scores.
 
-    Write all reasons and the final explanation in English.
+    {language_instruction}
     """
 
     response = client.responses.parse(

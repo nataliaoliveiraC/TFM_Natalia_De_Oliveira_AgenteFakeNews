@@ -107,6 +107,7 @@ def analyze_news(
             claim=claim_item.claim,
             evidences=evidences,
             client=client,
+            language = language,
         )
 
         claim_summary = ClaimVerificationSummary(
