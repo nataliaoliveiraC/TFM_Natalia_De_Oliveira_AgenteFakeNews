@@ -240,6 +240,7 @@ def evidence_verifier_node(
             claim=claim_item.claim,
             evidences=evidences,
             client=client,
+            language=state["language"],
         )
 
         claim_summary = ClaimVerificationSummary(
