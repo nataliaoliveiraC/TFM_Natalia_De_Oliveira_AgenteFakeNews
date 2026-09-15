@@ -1,0 +1,16 @@
+{
+    "validation": {
+        "macro_f1": 0.987396
+    },
+    "reuters_ablation": {
+        "original_macro_f1": 0.987396,
+        "without_reuters_macro_f1": 0.98051,
+        "macro_f1_drop": 0.006886
+    },
+    "test": {
+        "accuracy": 0.9908571428571429,
+        "precision_macro": 0.9909229272578924,
+        "recall_macro": 0.9907843137254901,
+        "f1_macro": 0.990848429067481
+    }
+}

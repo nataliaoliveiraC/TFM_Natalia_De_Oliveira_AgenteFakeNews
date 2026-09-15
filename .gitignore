@@ -1,1 +1,7 @@
-Service/.env
+.env
+.vscode/
+__pycache__/
+*.pyc
+Trash/
+Data/averitec/raw/knowledge_store/
+Data/ml/raw_data_es.csv
