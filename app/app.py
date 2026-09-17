@@ -1,5 +1,6 @@
 from pathlib import Path
 import sys
+import base64
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
@@ -23,6 +24,13 @@ st.set_page_config(
     page_icon="app/assets/lupa_icon.png",
     layout="wide",
 )
+
+icon_path = PROJECT_ROOT / "app" / "assets" / "lupa_icon.png"
+
+with open(icon_path, "rb") as image_file:
+    icon_base64 = base64.b64encode(
+        image_file.read()
+    ).decode()
 
 st.markdown(
     """
@@ -48,7 +56,7 @@ st.markdown(
         .app-title {
             font-size: 2.2rem;
             font-weight: 700;
-            margin-bottom: 0.4rem;
+            margin-bottom: 0;
         }
 
         .app-subtitle {
@@ -134,14 +142,41 @@ news_graph = get_resources()
 #     """
 # )
 
+# st.markdown(
+#     """
+#     <div class="app-header">
+#         <div class="app-title">Fake News Verification System</div>
+#         <div class="app-subtitle">
+#             Sistema de verificación de noticias basado en extracción de claims,
+#             búsqueda de evidencias en la web, RAG y verificación factual. Para noticias en inglés, 
+#             incorpora además una señal auxiliar de Machine Learning.
+#         </div>
+#     </div>
+#     """,
+#     unsafe_allow_html=True,
+# )
+
 st.markdown(
-    """
-    <div class="app-header">
-        <div class="app-title">Fake News Verification System</div>
+    f"""<div class="app-header">
+        <div style="
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 0.4rem;">
+            <img src="data:image/png;base64,{icon_base64}"
+                style="
+                    width: 46px;
+                    height: 46px;
+                    object-fit: contain;">
+            <div class="app-title">
+                Fake News Verification System
+            </div>
+        </div>
         <div class="app-subtitle">
             Sistema de verificación de noticias basado en extracción de claims,
-            búsqueda de evidencias en la web, RAG y verificación factual. Para noticias en inglés, 
-            incorpora además una señal auxiliar de Machine Learning.
+            búsqueda de evidencias en la web, RAG y verificación factual.
+            Para noticias en inglés, incorpora además una señal auxiliar de
+            Machine Learning.
         </div>
     </div>
     """,
