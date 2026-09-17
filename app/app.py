@@ -25,7 +25,7 @@ st.set_page_config(
     layout="wide",
 )
 
-icon_path = PROJECT_ROOT / "app" / "assets" / "lupa_icon.png"
+icon_path = PROJECT_ROOT / "app" / "Assets" / "lupa_icon.png"
 
 with open(icon_path, "rb") as image_file:
     icon_base64 = base64.b64encode(
