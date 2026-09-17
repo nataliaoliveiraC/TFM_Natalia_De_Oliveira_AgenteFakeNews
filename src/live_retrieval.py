@@ -146,7 +146,10 @@ def build_faiss_index(chunk_embeddings):
         chunk_embeddings,
         dtype="float32",
     )
-
+    if embeddings.ndim != 2 or embeddings.shape[0] == 0:
+        raise ValueError(
+            "No hay embeddings válidos para construir el índice FAISS."
+        )
     dimension = embeddings.shape[1]
 
     index = faiss.IndexFlatIP(dimension)
@@ -231,22 +234,35 @@ def run_live_retrieval(
     evidencias más relevantes aplicando diversidad documental.
     """
 
+    # Comprobación inicial
+    if not candidate_documents:
+        return []
+
     # 1. Preparar y limpiar documentos
     prepared_documents = prepare_live_documents(
         candidate_documents
     )
+
+    if not prepared_documents:
+        return []
 
     # 2. Dividir los documentos en chunks
     chunks = chunk_live_documents(
         prepared_documents
     )
 
+    if not chunks:
+        return []
+    
     # 3. Generar embeddings de los chunks
     chunk_embeddings = embed_chunks(
         chunks=chunks,
         embedding_model=embedding_model,
     )
 
+    if len(chunk_embeddings) == 0:
+        return []
+    
     # 4. Construir el índice FAISS
     faiss_index = build_faiss_index(
         chunk_embeddings
