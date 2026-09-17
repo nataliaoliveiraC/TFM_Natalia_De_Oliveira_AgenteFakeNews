@@ -1,5 +1,7 @@
 from tavily import TavilyClient
 from pydantic import BaseModel
+import time
+import requests
 
 def search_web(
     query,
@@ -26,10 +28,21 @@ def search_web(
         Resultados normalizados con título, URL, snippet y tipo de fuente.
     """
 
-    response = tavily_client.search(
-        query=query,
-        max_results=max_results,
-    )
+    response = None
+
+    for attempt in range(3):
+        try:
+            response = tavily_client.search(
+                query=query,
+                max_results=max_results,
+            )
+            break
+
+        except requests.exceptions.RequestException:
+            if attempt == 2:
+                return []
+
+            time.sleep(2)
 
     results = []
 
@@ -65,11 +78,28 @@ def search_fact_checks(
     Busca verificaciones previas relacionadas con una consulta en dominios especializados en fact-checking.
     """
 
-    response = tavily_client.search(
-        query=query,
-        max_results=max_results,
-        include_domains=FACT_CHECK_DOMAINS,
-    )
+    # response = tavily_client.search(
+    #     query=query,
+    #     max_results=max_results,
+    #     include_domains=FACT_CHECK_DOMAINS,
+    # )
+
+    response = None
+
+    for attempt in range(3):
+        try:
+            response = tavily_client.search(
+                query=query,
+                max_results=max_results,
+                include_domains=FACT_CHECK_DOMAINS,
+            )
+            break
+
+        except requests.exceptions.RequestException:
+            if attempt == 2:
+                return []
+
+            time.sleep(2)
 
     results = []
 
